@@ -54,6 +54,7 @@ namespace Project_3
         {
             try
             {
+                sach.MaSach = "STV"+ sachs.Count;
                 sachs.AddLast(sach);
                 return true;
             }
@@ -62,6 +63,22 @@ namespace Project_3
                 return false;
             }
         }
+        public bool RemoveSach(Sach sach)
+        {
+
+            try
+            {
+
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
+
         public bool SelectSach()
         {
             try

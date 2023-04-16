@@ -11,7 +11,7 @@ namespace Project_3
         private string maSach;
         private string tenSach;
         private string tacGia;
-        private string nSX;
+        private string nhaXB;
         private double giaBan;
         private int namPH;
         private int soTrang;
@@ -19,12 +19,24 @@ namespace Project_3
         private int tinhTrang;
 
         private Sach() { }
-        public Sach(string maSach, string tenSach, string tacGia, string nSX, double giaBan, int namPH, int soTrang, string ngayNK, int tinhTrang)
+        public Sach(string maSach, string tenSach, string tacGia, string nhaXB, double giaBan, int namPH, int soTrang)
         {
             this.maSach = maSach;
             this.tenSach = tenSach;
             this.tacGia = tacGia;
-            this.nSX = nSX;
+            this.nhaXB = nhaXB;
+            this.giaBan = giaBan;
+            this.namPH = namPH;
+            this.soTrang = soTrang;
+            this.ngayNK = DateTime.Now;
+            this.tinhTrang = 0;
+        }
+        public Sach(string maSach, string tenSach, string tacGia, string nhaXB, double giaBan, int namPH, int soTrang, string ngayNK, int tinhTrang)
+        {
+            this.maSach = maSach;
+            this.tenSach = tenSach;
+            this.tacGia = tacGia;
+            this.nhaXB = nhaXB;
             this.giaBan = giaBan;
             this.namPH = namPH;
             this.soTrang = soTrang;
@@ -36,7 +48,7 @@ namespace Project_3
         public string MaSach { get => maSach; set => maSach = value; }
         public string TenSach { get => tenSach; set => tenSach = value; }
         public string TacGia { get => tacGia; set => tacGia = value; }
-        public string NSX { get => nSX; set => nSX = value; }
+        public string NhaXB { get => nhaXB; set => nhaXB = value; }
         public double GiaBan { get => giaBan; set => giaBan = value; }
         public int NamPH { get => namPH; set => namPH = value; }
         public int SoTrang { get => soTrang; set => soTrang = value; }
@@ -46,7 +58,7 @@ namespace Project_3
 
         public string sachPrinFile()
         {
-            return $"{maSach}_{tenSach}_{tacGia}_{nSX}_{giaBan}_{namPH}_{soTrang}_{ngayNK.ToString("MM/dd/yyyy")}_{tinhTrang}";
+            return $"{maSach}_{tenSach}_{tacGia}_{nhaXB}_{giaBan}_{namPH}_{soTrang}_{ngayNK.ToString("MM/dd/yyyy")}_{tinhTrang}";
         }
     }
 }
