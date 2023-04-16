@@ -6,7 +6,7 @@ namespace Project_3
     {
         static void Main(string[] args)
         {
-            QuanLy();
+
         }
         private static void QuanLy() {
             QuanLy quanLy = new QuanLy();

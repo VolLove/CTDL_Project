@@ -35,9 +35,9 @@ namespace Project_3
             this.maPhieuMuon = maPhieuMuon;
             this.maDG = maDG;
             this.maSach = maSach;
-            string[] s = ngayMuon.Split('_');
-            this.ngayMuon = new DateTime(int.Parse(s[2]),int.Parse( s[0]), int.Parse(s[1]));
-            s = ngayTra.Split('_');
+            string[] s = ngayMuon.Split('/');
+            this.ngayMuon = new DateTime(int.Parse(s[2]),int.Parse(s[0]), int.Parse(s[1]));
+            s = ngayTra.Split('/');
             this.ngayTra = new DateTime(int.Parse(s[2]), int.Parse(s[0]), int.Parse(s[1]));
             this.tinhTrang = tinhTrang;
         }
@@ -49,6 +49,10 @@ namespace Project_3
         public DateTime NgayTra { get => ngayTra; set => ngayTra = value; }
         public int TinhTrang { get => tinhTrang; set => tinhTrang = value; }
 
+        public string Print()
+        {
+            return $"|{MaPhieuMuon,-10}|{maDG,-10}|{maSach,-10}|{ngayMuon.ToString("MM/dd/yyyy"),-12}|{ngayTra.ToString("MM/dd/yyyy"),-12}|";
+        }
         public string PrintFile()
         {
             return $"{maPhieuMuon}_{maDG}_{MaSach}_{ngayMuon.ToString("MM/dd/yyyy")}_{ngayTra.ToString("MM/dd/yyyy")}_{tinhTrang}";

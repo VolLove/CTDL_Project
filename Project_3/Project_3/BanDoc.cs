@@ -34,7 +34,10 @@ namespace Project_3
         public string Name { get => name; set => name = value; }
         public DateTime NgayDK { get => ngayDK; set => ngayDK = value; }
 
-
+        public string Print()
+        {
+            return $"|{maBD,-10}|{name,-20}|{ngayDK.ToString("MM/dd/yyyy"),-20}|";
+        }
         public string PrintFile() {
             return $"{maBD}_{name}_{ngayDK.ToString("MM/dd/yyyy")}";    
         }
