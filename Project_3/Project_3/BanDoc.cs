@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,15 +14,29 @@ namespace Project_3
         private DateTime ngayDK;
 
         private BanDoc() { }    
-        public BanDoc(string maBD, string name, DateTime ngayDK)
+
+        public BanDoc(string maBD, string name)
         {
             this.maBD = maBD;
             this.name = name;
-            this.ngayDK = ngayDK;
+            this.ngayDK = DateTime.Now;
+        }
+
+        public BanDoc(string maBD, string name, string ngayDK)
+        {
+            this.maBD = maBD;
+            this.name = name;
+            string[] s = ngayDK.Split('_');
+            this.ngayDK = new DateTime(int.Parse(s[2]), int.Parse(s[0]), int.Parse(s[1]));
         }
 
         public string MaBD { get => maBD; set => maBD = value; }
         public string Name { get => name; set => name = value; }
         public DateTime NgayDK { get => ngayDK; set => ngayDK = value; }
+
+
+        public string PrintFile() {
+            return $"{maBD}_{name}_{ngayDK.ToString("MM/dd/yyyy")}";    
+        }
     }
 }

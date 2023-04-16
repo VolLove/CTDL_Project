@@ -21,5 +21,10 @@ namespace Project_3
 
         public string UserName { get => userName; set => userName = value; }
         public string Password { get => password; set => password = value; }
+
+        public string PrintFile()
+        {
+            return $"{userName}_{password}";
+        }
     }
 }

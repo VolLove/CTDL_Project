@@ -18,8 +18,9 @@ namespace Project_3
         private DateTime ngayNK;
         private int tinhTrang;
 
-        private Sach() { }
-        public Sach(string maSach, string tenSach, string tacGia, string nhaXB, double giaBan, int namPH, int soTrang)
+        private Sach() {
+        }
+        public Sach(string maSach,string tenSach, string tacGia, string nhaXB, double giaBan, int namPH, int soTrang)
         {
             this.maSach = maSach;
             this.tenSach = tenSach;
@@ -28,8 +29,8 @@ namespace Project_3
             this.giaBan = giaBan;
             this.namPH = namPH;
             this.soTrang = soTrang;
-            this.ngayNK = DateTime.Now;
-            this.tinhTrang = 0;
+            ngayNK = DateTime.Now;
+            tinhTrang = 0;
         }
         public Sach(string maSach, string tenSach, string tacGia, string nhaXB, double giaBan, int namPH, int soTrang, string ngayNK, int tinhTrang)
         {

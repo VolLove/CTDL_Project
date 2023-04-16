@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,18 +15,31 @@ namespace Project_3
         private DateTime ngayMuon;
         private DateTime ngayTra;
         private int tinhTrang;
-        private int sTT;
 
-        public PhieuMuon() { }
-        public PhieuMuon(string maPhieuMuon, string maDG, string maSach, DateTime ngayMuon, DateTime ngayTra, int tinhTrang, int sTT)
+        public PhieuMuon() {
+        
+            tinhTrang = 0;
+            ngayMuon = DateTime.Now;
+            ngayTra = ngayMuon.AddDays(7);
+        }
+        public PhieuMuon( string maDG, string maSach)
+        {
+            this.maDG = maDG;
+            this.maSach = maSach;
+            tinhTrang = 0;
+            ngayMuon = DateTime.Now;
+            ngayTra = ngayMuon.AddDays(7);
+        }
+        public PhieuMuon(string maPhieuMuon, string maDG, string maSach, string ngayMuon, string ngayTra, int tinhTrang)
         {
             this.maPhieuMuon = maPhieuMuon;
             this.maDG = maDG;
             this.maSach = maSach;
-            this.ngayMuon = ngayMuon;
-            this.ngayTra = ngayTra;
+            string[] s = ngayMuon.Split('_');
+            this.ngayMuon = new DateTime(int.Parse(s[2]),int.Parse( s[0]), int.Parse(s[1]));
+            s = ngayTra.Split('_');
+            this.ngayTra = new DateTime(int.Parse(s[2]), int.Parse(s[0]), int.Parse(s[1]));
             this.tinhTrang = tinhTrang;
-            this.sTT = sTT;
         }
 
         public string MaPhieuMuon { get => maPhieuMuon; set => maPhieuMuon = value; }
@@ -34,6 +48,10 @@ namespace Project_3
         public DateTime NgayMuon { get => ngayMuon; set => ngayMuon = value; }
         public DateTime NgayTra { get => ngayTra; set => ngayTra = value; }
         public int TinhTrang { get => tinhTrang; set => tinhTrang = value; }
-        public int STT { get => sTT; set => sTT = value; }
+
+        public string PrintFile()
+        {
+            return $"{maPhieuMuon}_{maDG}_{MaSach}_{ngayMuon.ToString("MM/dd/yyyy")}_{ngayTra.ToString("MM/dd/yyyy")}_{tinhTrang}";
+        }
     }
 }
