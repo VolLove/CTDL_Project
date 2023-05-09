@@ -56,10 +56,10 @@ namespace Project_3
         public DateTime NgayNK { get => ngayNK; set => ngayNK = value; }
         public int TinhTrang { get => tinhTrang; set => tinhTrang = value; }
 
-        public string Print()
+        public string sachPrin()
         {
-        }
-        public string sachPrinFile()
+            return $"{maSach}|{tenSach}|{tacGia}|{nhaXB}|{giaBan}|{namPH}|{soTrang}|{ngayNK.ToString("MM/dd/yyyy")}|{tinhTrang}";
+        } public string sachPrinFile()
         {
             return $"{maSach}_{tenSach}_{tacGia}_{nhaXB}_{giaBan}_{namPH}_{soTrang}_{ngayNK.ToString("MM/dd/yyyy")}_{tinhTrang}";
         }

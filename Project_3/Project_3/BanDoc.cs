@@ -26,7 +26,7 @@ namespace Project_3
         {
             this.maBD = maBD;
             this.name = name;
-            string[] s = ngayDK.Split('_');
+            string[] s = ngayDK.Split('/');
             this.ngayDK = new DateTime(int.Parse(s[2]), int.Parse(s[0]), int.Parse(s[1]));
         }
 

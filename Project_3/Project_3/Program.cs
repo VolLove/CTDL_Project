@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Project_3
 {
@@ -6,11 +7,8 @@ namespace Project_3
     {
         static void Main(string[] args)
         {
-
-        }
-        private static void QuanLy() {
             QuanLy quanLy = new QuanLy();
-
+            quanLy.MuonSach();
         }
     }
 }
