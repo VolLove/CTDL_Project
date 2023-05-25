@@ -18,29 +18,16 @@ namespace Project_3
             this.userName = userName;
             this.password = password;
         }
-        public void UserNew(string userName, string password)
-        {
-            this.userName = userName;
-            Password = password;
-        }
         public string UserName { get => userName; set => userName = value; }
 
         /// <summary>
         /// Passwoord được hash
         /// </summary>
-        public string Password
-        {
-            get => password;
-            set
-            {
-                password = Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
-                Console.WriteLine(password);
-            }
-        }
+        public string Password { get => password; set => password = value; }
 
         public string PrintFile()
         {
-            return $"{userName}_{password}";
+            return $"{userName}#{password}";
         }
     }
 }
