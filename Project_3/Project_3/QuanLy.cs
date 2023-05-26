@@ -46,7 +46,7 @@ namespace Project_3
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        string[] strings = line.Split("_");
+                        string[] strings = line.Split("#");
                         User u = new User(strings[0], strings[1]);
                         users.AddLast(u);
                     }
@@ -55,7 +55,7 @@ namespace Project_3
             }
             catch (Exception)
             {
-                Console.WriteLine("User error: Lỗi dữ liệu !");
+                Console.WriteLine("\tUser error: Lỗi dữ liệu !");
                 return false;
             }
 
@@ -75,7 +75,7 @@ namespace Project_3
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        string[] strings = line.Split("_");
+                        string[] strings = line.Split("#");
                         Sach sach = new Sach(strings[0], strings[1], strings[2], strings[3], double.Parse(strings[4]), int.Parse(strings[5]), int.Parse(strings[6]), strings[7], int.Parse(strings[8]));
                         sachs.AddLast(sach);
                     }
@@ -84,7 +84,7 @@ namespace Project_3
             }
             catch (Exception)
             {
-                Console.WriteLine("Sach error: Loi du lieu!");
+                Console.WriteLine("\tSach error: Loi du lieu!");
 
                 return false;
             }
@@ -104,7 +104,7 @@ namespace Project_3
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        string[] strings = line.Split("_");
+                        string[] strings = line.Split("#");
                         PhieuMuon phieuMuon = new PhieuMuon(strings[0], strings[1], strings[2], strings[3], strings[4], int.Parse(strings[5]));
                         phieuMuons.AddLast(phieuMuon);
                     }
@@ -114,7 +114,7 @@ namespace Project_3
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                Console.WriteLine("Phieu muon error: loi du lieu!");
+                Console.WriteLine("\tPhieu muon error: loi du lieu!");
                 return false;
             }
         }
@@ -133,21 +133,21 @@ namespace Project_3
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        string[] s = line.Split("_");
+                        string[] s = line.Split("#");
                         BanDoc banDoc = new BanDoc(s[0], s[1], s[2]);
                         banDocs.AddLast(banDoc);
                     }
                 }
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("Ban doc erro: Loi du lieu");
+                Console.WriteLine("\tBan doc error: Loi du lieu");
                 return false;
             }
         }
 
-        ////////////////
+        ///////////////////////
 
         /// <summary>
         /// Lưu danh sách sách vào file Sach.txt.
@@ -171,7 +171,7 @@ namespace Project_3
             }
             catch (Exception)
             {
-                Console.WriteLine("Sach error: Loi ghi file!");
+                Console.WriteLine("\tSach error: Loi ghi file!");
                 return false;
             }
 
@@ -199,40 +199,12 @@ namespace Project_3
             }
             catch (Exception)
             {
-                Console.WriteLine("Phieu muon erro: Loi ghi file!");
-                return false;
-            }
-        }
-        /// <summary>
-        /// Lưu dữ liệu bạn đọc vào file BanDoc.txt.
-        /// Ghi đè dữ liệu cũ trong file.
-        /// </summary>
-        /// <returns></returns>
-        public bool UpdateBanDoc()
-        {
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(banDocFile))
-                {
-                    LinkedListNode<BanDoc> node = banDocs.First;
-                    while (node != null)
-                    {
-
-                        node.Value.PrintFile();
-                        node = node.Next;
-                    }
-                }
-
-                return true;
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Ban doc error: Loi ghi file!");
+                Console.WriteLine("\tPhieu muon erro: Loi ghi file!");
                 return false;
             }
         }
 
-        ////////////////////////
+        ///////////////////////
 
         /// <summary>
         /// Thêm sách mới vào danh sách.
@@ -243,26 +215,27 @@ namespace Project_3
         /// <returns></returns>
         public bool AddSach(Sach sach)
         {
-            if (ExistSach(sach.MaSach) == true)
+            if (FindSach(sach.MaSach) != null)
             {
-                Console.WriteLine("Sach error: Ma sach ton tai!");
+                Console.WriteLine("\tSach error: Ma sach ton tai!");
                 return false;
             }
             try
             {
+                sach.TinhTrang = 0;
                 sachs.AddLast(sach);
-                if (UpdateSach() == false)
+                if (!UpdateSach())
                 {
                     return false;
                 }
-                if (SelectSach() == false)
+                if (!SelectSach())
                 {
                     return false;
                 }
             }
             catch (Exception)
             {
-                Console.WriteLine("Sach error: Khong the them sach!");
+                Console.WriteLine("\tSach error: Khong the them sach!");
                 return false;
             }
             return true;
@@ -278,62 +251,46 @@ namespace Project_3
         {
             try
             {
+
+                if (FindBanDoc(phieuMuon.MaBD) == null)
+                {
+                    return false;
+                }
+                LinkedListNode<Sach> node;
+                if ((node = FindSach(phieuMuon.MaSach)) != null)
+                {
+                    if (node.Value.TinhTrang != 0)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
                 DateTime dateTime = DateTime.Now;
                 int x = dateTime.Hour * 1800 + dateTime.Minute * 60 + dateTime.Second;
                 phieuMuon.MaPhieuMuon = $"{dateTime.Year}TDCTV{dateTime.DayOfYear}D{x}";
                 phieuMuons.AddLast(phieuMuon);
-                if (UpdatePhieuMuon() == false)
+                node.Value.TinhTrang = 1;
+                if (!UpdatePhieuMuon())
                 {
                     return false;
-                }
-                if (SelectPhieuMuon() == false)
-                {
-                    return false;
-                }
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Phieu muon error:Khong the them phieu muon!");
-                return false;
-            }
-            return true;
-        }
-        /// <summary>
-        /// Thêm bạn đọc mới.
-        /// MaBD tồn tại kết thúc hàm, return false.
-        /// Update và lấy lại danh sách nếu thêm thành công.
-        /// </summary>
-        /// <param name="banDoc"></param>
-        /// <returns></returns>
-        public bool AddBanDoc(BanDoc banDoc)
-        {
-            if (ExistBanDoc(banDoc.MaBD))
-            {
-                Console.WriteLine("Ban doc error: Ma ban doc ton tai!");
-                return false;
-            }
-            try
-            {
-                DateTime dateTime = DateTime.Now;
-                banDoc.MaBD = $"{dateTime.Year}TDC{dateTime.Month}{banDocs.Count + 1}";
-                banDocs.AddLast(banDoc);
-                if (UpdateBanDoc() == false)
-                {
-                    return false;
-                }
-                if (SelectBanDoc() == false)
-                {
-                    return false;
-                }
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Ban doc error: Khong the them!");
-                return false;
-            }
-            return true;
-        }
 
+                }
+                UpdateSach();
+                SelectPhieuMuon();
+                SelectSach();
+                TableSach();
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("\tPhieu muon error:Khong the them phieu muon!");
+                return false;
+            }
+            return true;
+        }
         ////////////////////////
 
         /// <summary>
@@ -360,111 +317,64 @@ namespace Project_3
         ///////////////////////
 
         /// <summary>
-        /// Kiểm tra tồn tại của sách.
-        /// Mã sách tồn tại return true.
+        /// Tìm kiếm và trả về thông tin sách bằng mã sách.
         /// </summary>
         /// <param name="maSach"></param>
         /// <returns></returns>
-        public bool ExistSach(string maSach)
+        public LinkedListNode<Sach> FindSach(string maSach)
         {
             LinkedListNode<Sach> node = sachs.First;
             while (node != null)
             {
                 if (node.Value.MaSach.Equals(maSach))
                 {
-                    return true;
+                    return node;
                 }
                 node = node.Next;
             }
-            return false;
+            return null;
         }
         /// <summary>
-        /// Kiểm tra tồn tại phiếu mượn.
-        /// Mã phiếu mượn tồn tại return true.
+        /// Tìm kiếm và trả về thông tin phiếu mượn bằng mã phiếu mượn.
         /// </summary>
         /// <param name="maPhieuMuon"></param>
         /// <returns></returns>
-        public bool ExistPhieu(string maPhieuMuon)
+        public LinkedListNode<PhieuMuon> FindPhieu(string maPhieuMuon)
         {
             LinkedListNode<PhieuMuon> node = phieuMuons.First;
             while (node != null)
             {
-                if (node.Value.Equals(maPhieuMuon))
+                if (node.Value.MaSach.Equals(maPhieuMuon))
                 {
-                    return true;
+                    return node;
                 }
                 node = node.Next;
             }
-            return false;
+            return null;
         }
         /// <summary>
-        /// Kiểm tra tồn tại bạn đọc.
-        /// Mã bạn đọc tồn tại return true.
+        /// tìm kiếm và trả về thông tin bạn đọc bằng mã bạn đọc
         /// </summary>
         /// <param name="maBanDoc"></param>
         /// <returns></returns>
-        public bool ExistBanDoc(string maBanDoc)
+        public LinkedListNode<BanDoc> FindBanDoc(string maBanDoc)
         {
             LinkedListNode<BanDoc> node = banDocs.First;
             while (node != null)
             {
                 if (node.Value.MaBD.Equals(maBanDoc))
                 {
-                    return true;
+                    return node;
                 }
                 node = node.Next;
             }
-            return false;
+            return null;
         }
-        private bool MuonChua(string maSach)
-        {
-            LinkedListNode<Sach> node = sachs.First;
-            while (node != null)
-            {
-                if (node.Value.MaSach.Equals(maSach))
-                {
-                    if (node.Value.TinhTrang == 1)
-                    {
-                        return true;
-                    }
-                }
-                node = node.Next;
-            }
-            return false;
-        }
-        private void TMuon(string maSach)
-        {
-            LinkedListNode<Sach> node = sachs.First;
-            LinkedList<Sach> values = new LinkedList<Sach>();
-            while (node != null)
-            {
-                if (node.Value.MaSach.Equals(maSach))
-                {
-                    node.Value.TinhTrang = 1;
-                }
-                    values.AddLast(node.Value);
-                node = node.Next;
 
-            }
-            test(values);
-        }
-        private bool TTra(string maSach)
-        {
-            LinkedListNode<BanDoc> node = banDocs.First;
-            while (node != null)
-            {
-                if (node.Value.MaBD.Equals(maSach))
-                {
-                    return true;
-                }
-                node = node.Next;
-            }
-            return false;
-        }
-        /////////////////////////
+        ///////////////////////
 
         /// <summary>
-        /// Xoá sách khỏi danh sách.
+        /// Xoá sách khỏi danh sách và update lại dữ liệu.
         /// Nếu sách đang được mượn sẽ dừng quá trình và thông báo.
         /// </summary>
         /// <param name="maSach"></param>
@@ -473,24 +383,21 @@ namespace Project_3
         {
             try
             {
-                LinkedListNode<Sach> node = sachs.First;
-                while (node != null)
+                LinkedListNode<Sach> node = FindSach(maSach);
+                if (node != null)
                 {
-                    if (node.Value.MaSach.Equals(maSach))
+                    if (node.Value.TinhTrang == 0)
                     {
-                        if (node.Value.TinhTrang != 0)
-                        {
-                            node = node.Next;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                        sachs.Remove(node);
+                        UpdateSach();
+                        SelectSach();
+                        return true;
                     }
+                    Console.WriteLine("\tSach dang duoc muon!");
+                    return false;
                 }
+                Console.WriteLine("\tKhong tim thay sach!");
                 return false;
-
             }
             catch (Exception)
             {
@@ -507,49 +414,69 @@ namespace Project_3
         /// <param name="sach"></param>
         /// <param name="banDoc"></param>
         /// <returns></returns>
-        public void MuonSach()
+        public bool MuonSach()
         {
-            string maBD; string maSach="";
+            string maBD; string maSach;
+            LinkedListNode<BanDoc> nodeBanDoc;
+            LinkedListNode<Sach> nodeSach;
             int count = 0;
             do
             {
-                Console.Write("Nhap ma ban doc: ");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write("\tNhap ma ban doc: ");
+                Console.ForegroundColor = ConsoleColor.White;
                 maBD = Console.ReadLine();
-                if (ExistBanDoc(maBD) == false)
+                nodeBanDoc = FindBanDoc(maBD);
+                if (nodeBanDoc != null)
                 {
-                    Console.WriteLine("Ma ban doc sai! Nhap lai");
-                    count++;
+                    count = 0;
+                    do
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("\tNhap ma sach: ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        maSach = Console.ReadLine();
+                        nodeSach = FindSach(maSach);
+                        if (nodeSach != null)
+                        {
+                            if (nodeSach.Value.TinhTrang == 0)
+                            {
+                                PhieuMuon phieuMuon = new PhieuMuon(maBD, maSach);
+                                if (AddPhieuMuon(phieuMuon))
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Console.WriteLine("\tMuon thanh cong!");
+                                    return true;
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("\tMuon that bai!");
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("\tSach duoc muon!");
+                            }
+                        }
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\tMa sach sai! Nhap lai!");
+                        count++;
+                    } while (nodeSach == null && count < 3);
                 }
-            } while (ExistBanDoc(maBD)==false && count<3);
-            if (count >=3)
-            {
-                return;
-            }
-            count = 0;
-            do
-            {
-                Console.Write("Nhap ma sach: ");
-                maSach = Console.ReadLine();
-                if (ExistSach(maSach) == false)
-                {
-                    Console.WriteLine("Ma sach sai! Nhap lai!");
-                    count++;
-                }
-            } while (ExistSach(maSach)==false && count<3);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\tMa ban doc sai! Nhap lai!");
+                count++;
+            } while (nodeBanDoc == null && count < 3);
             if (count >= 3)
             {
-                return;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\tNhap sai qua 3 lan! Ve menu!");
             }
-            if (MuonChua(maSach) == true)
-            {
-                return;
-            }
-            PhieuMuon phieuMuon = new PhieuMuon(maBD, maSach);
-            TMuon(maSach);
-            if (AddPhieuMuon(phieuMuon) == false)
-            {
-                return;
-            }
+            return false;
+
         }
 
         /// <summary>
@@ -557,20 +484,84 @@ namespace Project_3
         /// </summary>
         /// <param name="maPhieu"></param>
         /// <returns></returns>
-        public void TraSach(string maPhieu)
+        public bool TraSach()
         {
-            
+            int count = 0;
+            string maphieu;
+            LinkedListNode<PhieuMuon> phieuMuon = null;
+            LinkedListNode<Sach> nodeSach = null;
+            do
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write("\tNhap ma phieu muon: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                maphieu = Console.ReadLine();
+                phieuMuon = FindPhieu(maphieu);
+                if (phieuMuon != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine($"\t{"Ma PM",-20}|{"Ma BD",-10}|{"Ma sach",-10}|{"Ngay muon",-12}|{"Ngay tra",-12}|{"Tinh trang",-10}");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(phieuMuon.Value.ToString());
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\tCo tra sach ?\n\ty/n?");
+                    ConsoleKey key = Console.ReadKey().Key;
+                    Console.WriteLine();
+                    if (key == ConsoleKey.Y)
+                    {
+                        nodeSach = FindSach(phieuMuon.Value.MaSach);
+                        phieuMuon.Value.TinhTrang = 1;
+                        nodeSach.Value.TinhTrang = 0;
+                        bool b = UpdateSach();
+                        b = UpdatePhieuMuon();
+                        b = SelectSach();
+                        b = SelectPhieuMuon();
+                        return b;
+                    }
+
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\tMa phieu muon sai! Nhap lai!");
+                    count++;
+                }
+            } while (phieuMuon == null && count < 3);
+            if (count >= 3)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\tNhap sai qua 3 lan! Ve menu!");
+            }
+            return false;
         }
 
 
 
         /////////////////////////
-        public void test(LinkedList<Sach> saches)
+        public void TableSach()
         {
-            LinkedListNode<Sach> node = saches.First;
+            Console.WriteLine("\tDanh sach sach:");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\t{"Ma sach",-10}|{"Ten sach",-10}|{"Tac gia",-15}|{"Nha xuat ban",-15}|{"Gia ban(VND)",-15}|{"Nam PH",-10}|{"So trang",-10}|{"Ngay nhap kho",-15}|{"Tinh trang",-10}");
+            LinkedListNode<Sach> node = sachs.First;
+            Console.ForegroundColor = ConsoleColor.Blue;
+
             while (node != null)
             {
-                Console.WriteLine(node.Value.sachPrin());
+                Console.WriteLine(node.Value.ToString());
+                node = node.Next;
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+
+        }
+        public void TablePhieu()
+        {
+            Console.WriteLine("\tDanh sach phieu muon:");
+            Console.WriteLine($"\t{"Ma PM",-20}|{"Ma BD",-10}|{"Ma sach",-10}|{"Ngay muon",-12}|{"Ngay tra",-12}|{"Tinh trang",-10}");
+            LinkedListNode<PhieuMuon> node = phieuMuons.First;
+            while (node != null)
+            {
+                Console.WriteLine(node.Value.ToString());
                 node = node.Next;
             }
         }

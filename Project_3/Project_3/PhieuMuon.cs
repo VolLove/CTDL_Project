@@ -14,6 +14,7 @@ namespace Project_3
         private string maSach;
         private DateTime ngayMuon;
         private DateTime ngayTra;
+        //chưa trả là 0, đã trả là 1
         private int tinhTrang;
 
         public PhieuMuon() {
@@ -22,7 +23,7 @@ namespace Project_3
             ngayMuon = DateTime.Now;
             ngayTra = ngayMuon.AddDays(7);
         }
-        public PhieuMuon( string maBD, string maSach)
+        public PhieuMuon(string maBD, string maSach)
         {
             this.maBD = maBD;
             this.maSach = maSach;
@@ -50,13 +51,24 @@ namespace Project_3
         public DateTime NgayTra { get => ngayTra; set => ngayTra = value; }
         public int TinhTrang { get => tinhTrang; set => tinhTrang = value; }
 
-        public string Print()
+        public string GetTinhTrang()
         {
-            return $"|{MaPhieuMuon,-10}|{maBD,-10}|{maSach,-10}|{ngayMuon.ToString("MM/dd/yyyy"),-12}|{ngayTra.ToString("MM/dd/yyyy"),-12}|";
+            if (tinhTrang == 0)
+            {
+                return "Chua tra";
+            }
+            else { return "Da tra"; }
+        }
+
+        override
+        public string ToString()
+        {
+            return $"\t{MaPhieuMuon,-20}|{maBD,-10}|{maSach,-10}|{ngayMuon.ToString("MM/dd/yyyy"),-12}|{ngayTra.ToString("MM/dd/yyyy"),-12}|{GetTinhTrang(),-10}";
+
         }
         public string PrintFile()
         {
-            return $"{maPhieuMuon}_{maBD}_{MaSach}_{ngayMuon.ToString("MM/dd/yyyy")}_{ngayTra.ToString("MM/dd/yyyy")}_{tinhTrang}";
+            return $"{maPhieuMuon}#{maBD}#{MaSach}#{ngayMuon.ToString("MM/dd/yyyy")}#{ngayTra.ToString("MM/dd/yyyy")}#{tinhTrang}";
         }
     }
 }

@@ -16,9 +16,10 @@ namespace Project_3
         private int namPH;
         private int soTrang;
         private DateTime ngayNK;
+        //chưa mượn là 0, mượn là 1
         private int tinhTrang;
 
-        private Sach() {
+        public Sach() {
         }
         public Sach(string maSach,string tenSach, string tacGia, string nhaXB, double giaBan, int namPH, int soTrang)
         {
@@ -55,13 +56,25 @@ namespace Project_3
         public int SoTrang { get => soTrang; set => soTrang = value; }
         public DateTime NgayNK { get => ngayNK; set => ngayNK = value; }
         public int TinhTrang { get => tinhTrang; set => tinhTrang = value; }
-
-        public string sachPrin()
+        public string getTinhTrang()
         {
-            return $"{maSach}|{tenSach}|{tacGia}|{nhaXB}|{giaBan}|{namPH}|{soTrang}|{ngayNK.ToString("MM/dd/yyyy")}|{tinhTrang}";
+            if (tinhTrang == 0)
+            {
+                return "Chua muon";
+            }
+            else
+            {
+                return "Duoc muon";
+            }
+        }
+        override
+        public string ToString()
+        {
+            return $"\t{maSach,-10}|{tenSach,-10}|{tacGia,-15}|{nhaXB,-15}|{string.Format("{0:#,000}", giaBan) ,-15}|{namPH,-10}|{soTrang,-10}|{ngayNK.ToString("MM/dd/yyyy"),-15}|{getTinhTrang(),-10}";
         } public string sachPrinFile()
         {
-            return $"{maSach}_{tenSach}_{tacGia}_{nhaXB}_{giaBan}_{namPH}_{soTrang}_{ngayNK.ToString("MM/dd/yyyy")}_{tinhTrang}";
+            return $"{maSach}#{tenSach}#{tacGia}#{nhaXB}#{giaBan}#{namPH}#{soTrang}#{ngayNK.ToString("MM/dd/yyyy")}#{tinhTrang}";
         }
+
     }
 }

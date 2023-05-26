@@ -39,7 +39,7 @@ namespace Project_3
             return $"|{maBD,-10}|{name,-20}|{ngayDK.ToString("MM/dd/yyyy"),-20}|";
         }
         public string PrintFile() {
-            return $"{maBD}_{name}_{ngayDK.ToString("MM/dd/yyyy")}";    
+            return $"{maBD}#{name}#{ngayDK.ToString("MM/dd/yyyy")}";    
         }
     }
 }
